@@ -39,9 +39,7 @@ ActiveRecord::Schema.define(version: 2020_03_21_094613) do
   create_table "zip_associations", id: false, force: :cascade do |t|
     t.integer "zip", null: false
     t.integer "cbsa", null: false
-    t.integer "mdiv"
     t.index ["cbsa"], name: "index_zip_associations_on_cbsa"
-    t.index ["mdiv"], name: "index_zip_associations_on_mdiv"
     t.index ["zip"], name: "index_zip_associations_on_zip", unique: true
   end
 
