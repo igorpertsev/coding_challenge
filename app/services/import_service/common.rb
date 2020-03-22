@@ -15,11 +15,16 @@ module ImportService
 
       ::ImportService::Zip.import(zip_to_cbsa)
       ::ImportService::Population.import(cbsa_to_msa)
+      clear_caches
 
       { status: :ok }
     end
 
     private
+
+    def clear_caches
+      Rails.cache.delete_matched("#{InformationService::Population.cache_key_base}*")
+    end
 
     def invalid_import_request?
       errors << 'Missing required parameter :zip_to_cbsa' if zip_to_cbsa.nil?
