@@ -1,5 +1,5 @@
 class ImportDataJob < ApplicationJob
-  queue_as :default
+  queue_as :import
 
   def perform(zip_to_cbsa, cbsa_to_msa)
     ::ImportService::Zip.import(zip_to_cbsa)
