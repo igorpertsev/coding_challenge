@@ -9,7 +9,7 @@ module ImportService
     def parse_csv
       import_data = []
 
-      ::CSV.foreach(csv.path, headers: true, skip_blanks: true, encoding:'iso-8859-1:utf-8') do |row|
+      ::CSV.foreach(csv_path, headers: true, skip_blanks: true, encoding:'iso-8859-1:utf-8') do |row|
         next if row[1] == ::ZipAssociation::INVALID_ZIP
 
         import_data << row[0..1]

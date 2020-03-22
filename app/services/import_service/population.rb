@@ -11,7 +11,7 @@ module ImportService
       import_data = []
       mdiv_data = []
 
-      ::CSV.foreach(csv.path, headers: true, skip_blanks: true, encoding:'iso-8859-1:utf-8') do |row|
+      ::CSV.foreach(csv_path, headers: true, skip_blanks: true, encoding:'iso-8859-1:utf-8') do |row|
         next if row['CBSA'].nil?
 
         mdiv_data << [row['CBSA'], row['MDIV']] if row['MDIV']

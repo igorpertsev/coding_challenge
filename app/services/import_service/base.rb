@@ -2,12 +2,12 @@ require 'csv'
 
 module ImportService
   class Base
-    attr_accessor :csv
+    attr_accessor :csv_path
 
     BATCH_SIZE = 1500.freeze
 
-    def initialize(file)
-      @csv = file
+    def initialize(file_path)
+      @csv_path = file_path
     end
 
     def import
@@ -15,8 +15,8 @@ module ImportService
       parse_csv
     end
 
-    def self.import(file)
-      new(file).import
+    def self.import(file_path)
+      new(file_path).import
     end
 
     protected

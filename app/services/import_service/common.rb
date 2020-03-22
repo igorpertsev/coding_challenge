@@ -13,17 +13,18 @@ module ImportService
     def import
       return { errors: errors } if invalid_import_request?
 
-      ::ImportService::Zip.import(zip_to_cbsa)
-      ::ImportService::Population.import(cbsa_to_msa)
-      clear_caches
+      ImportDataJob.perform_later(persist_temp_file(zip_to_cbsa),
+                                  persist_temp_file(cbsa_to_msa))
 
       { status: :ok }
     end
 
     private
 
-    def clear_caches
-      Rails.cache.delete_matched("#{InformationService::Population.cache_key_base}*")
+    def persist_temp_file(file)
+      path = Rails.root.join('tmp', file.original_filename)
+      FileUtils.cp(file.tempfile.path, path)
+      path.to_s
     end
 
     def invalid_import_request?

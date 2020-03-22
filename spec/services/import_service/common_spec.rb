@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ImportService::Common do
-  let(:zip) { file_fixture('zip_to_cbsa.csv').open }
-  let(:mdiv) { file_fixture('cbsa_to_msa.csv').open }
+  let(:zip) { double(tempfile: double(path: file_fixture('zip_to_cbsa.csv').to_s), original_filename: 'zip_to_cbsa.csv') }
+  let(:mdiv) { double(tempfile: double(path: file_fixture('cbsa_to_msa.csv').to_s), original_filename: 'cbsa_to_msa.csv') }
 
   subject { described_class.new(zip_to_cbsa: zip, cbsa_to_msa: mdiv) }
 
@@ -76,13 +76,8 @@ RSpec.describe ImportService::Common do
         expect(subject.import).to eq(status: :ok)
       end
 
-      it 'calls Zip import' do
-        expect(::ImportService::Zip).to receive(:import)
-        subject.import
-      end
-
-      it 'calls Population import' do
-        expect(::ImportService::Population).to receive(:import)
+      it 'calls ImportDataJob to import data' do
+        expect(::ImportDataJob).to receive(:perform_later)
         subject.import
       end
     end

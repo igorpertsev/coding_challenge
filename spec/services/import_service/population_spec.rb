@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ImportService::Population do
-  let(:file) { file_fixture('cbsa_to_msa.csv').open }
+  let(:file) { file_fixture('cbsa_to_msa.csv').to_s }
   let(:mdiv_klass) { ::MdivCbsaAssociation }
   let(:population_klass) { ::PopulationInformation }
 

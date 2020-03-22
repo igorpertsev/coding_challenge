@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ImportService::Zip do
-  let(:file) { file_fixture('zip_to_cbsa.csv').open }
+  let(:file) { file_fixture('zip_to_cbsa.csv').to_s }
 
   subject { described_class.new(file) }
 
