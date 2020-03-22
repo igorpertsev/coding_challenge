@@ -8,8 +8,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'
 gem 'redis', '~> 4.0'
-# Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
+gem 'rack-attack'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors'

@@ -10,7 +10,7 @@ module ImportService
       import_data = []
 
       ::CSV.foreach(csv.path, headers: true, skip_blanks: true, encoding:'iso-8859-1:utf-8') do |row|
-        next if row[1] == INVALID_ZIP
+        next if row[1] == ::ZipAssociation::INVALID_ZIP
 
         import_data << row[0..1]
         import_data = persist_data_batch(import_data, ::ZipAssociation) if import_data.size >= BATCH_SIZE

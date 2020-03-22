@@ -5,7 +5,6 @@ module ImportService
     attr_accessor :csv
 
     BATCH_SIZE = 1500.freeze
-    INVALID_ZIP = '99999'.freeze
 
     def initialize(file)
       @csv = file
