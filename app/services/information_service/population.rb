@@ -8,42 +8,33 @@ module InformationService
       @zip = zip
     end
 
-    def run
-      cbsa = fetch_cbsa
-      return no_cbsa_response unless cbsa
-      build_response(cbsa, fetch_population_info(cbsa))
+    def fetch
+      return insufficient_data_response unless cbsa && cbsa != ::ZipAssociation::INVALID_ZIP
+      build_response(fetch_population_info(cbsa))
+    end
+
+    def self.fetch(zip)
+      new(zip).fetch
     end
 
     private
 
-    def fetch_cbsa
-      zip_association = ::ZipAssociation.by_zip(zip).first
-      return unless zip_association
-
-      mdiv_cbsa_association = ::MdivCbsaAssociation.by_mdiv(zip_association.cbsa).first
-      if mdiv_cbsa_association
-        mdiv_cbsa_association.cbsa
-      else
-        zip_association.cbsa
-      end
+    def cbsa
+      @cbsa ||= ::InformationService::Cbsa.fetch(zip)
     end
 
     def fetch_population_info(cbsa)
       ::PopulationInformation.by_cbsa(cbsa).by_lsad(DEFAULT_LSAD).first
     end
 
-    def build_response(cbsa, population)
-      return no_population_response(cbsa) unless population
+    def build_response(population)
+      return insufficient_data_response unless population
 
       population.as_json.merge(zip: zip)
     end
 
-    def no_population_response(cbsa)
+    def insufficient_data_response
       ::PopulationInformation.empty_response.merge(zip: zip, cbsa: cbsa)
-    end
-
-    def no_cbsa_response
-      ::PopulationInformation.empty_response.merge(zip: zip, cbsa: ::ZipAssociation::INVALID_ZIP)
     end
   end
 end
